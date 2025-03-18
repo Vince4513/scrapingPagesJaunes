@@ -21,5 +21,9 @@ Python Framework
 - scrapy list
 
 #### Save data to a file
-- scrapy crawl <spider_name> -O <file_name>.csv
+Append : -o  
+Overwrite : -O  
+
+- scrapy crawl <spider_name> -o <file_name>.csv
+- scrapy crawl <spider_name> -O <file_name>.csv 
 - scrapy crawl <spider_name> -O <file_name>.json
