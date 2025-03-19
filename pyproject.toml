@@ -11,6 +11,8 @@ scrapy = "^2.12.0"
 ipython = "^9.0.2"
 mysql = "^0.0.3"
 mysql-connector-python = "^9.2.0"
+scrapy-rotating-proxies = "^0.6.2"
+scrapeops-scrapy-proxy-sdk = "^1.0"
 
 [tool.pyright]
 useLibraryCodeForTypes = true

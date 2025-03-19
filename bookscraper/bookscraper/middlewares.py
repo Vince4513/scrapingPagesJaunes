@@ -218,3 +218,32 @@ class ScrapeOpsFakeBrowserHeaderAgentMiddleware:
         print(request.headers)
     # End def process_request
 # End class ScrapeOpsFakeBrowserHeaderAgentMiddleware
+
+import base64
+
+class MyProxyMiddleware(object):
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler.settings)
+    # End def from_crawler
+    
+    def __init__(self, settings):
+        load_dotenv()
+        self.user = settings.get('PROXY_USER')
+        self.password = settings.get('PROXY_PASSWORD') 
+        self.endpoint = settings.get('PROXY_ENDPOINT')
+        self.port = settings.get('PROXY_PORT')
+    # End def __init__
+
+    def process_request(self, request, spider):
+        user_credentials = '{user}:{passw}'.format(user=self.user, passw=self.password)
+        basic_authentication = 'Basic' + base64.b64encode(user_credentials.encode()).decode()
+        host = 'http://{endpoint}:{port}'.format(endpoint=self.endpoint, port=self.port)
+        request.meta['proxy'] = host
+        request.headers['Proxy-Authorization'] = basic_authentication
+
+        print('************ NEW PROXY ATTACHED ************')
+        print(request.meta['proxy'])
+    # End def process_request
+# End class MyProxyMiddleware

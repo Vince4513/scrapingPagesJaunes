@@ -23,7 +23,29 @@ SCRAPEOPS_FAKE_BROWSER_HEADER_ENABLED = True
 SCRAPEOPS_FAKE_USER_AGENT_ENDPOINT = 'https://headers.scrapeops.io/v1/user-agents'
 SCRAPEOPS_FAKE_USER_AGENT_ENABLED = True
 
-SCRAPEOPS_NUM_RESULTS = 50
+SCRAPEOPS_NUM_RESULTS = 50 # Number of different browser Header
+
+# Free Proxy - Option 1
+# ROTATING_PROXY_LIST = [
+#     '173.214.155.218:65280',
+#     '161.97.147.193:1599',
+#     '192.99.35.177:36077',
+#     '139.59.93.221:30306'
+# ]
+
+# Free Proxy - Option 2
+# ROTATING_PROXY_LIST_PATH = 'my/path/proxies.txt'
+
+# Smart Proxy - Option 3
+# PROXY_USER=''
+# PROXY_PASSWORD='' 
+# PROXY_ENDPOINT=''
+# PROXY_PORT=''
+
+# ScrapeOps Proxy - Option 4
+import os 
+SCRAPEOPS_API_KEY = os.environ['SCRAPEOPS_API_KEY']
+SCRAPEOPS_PROXY_ENABLED = True
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "bookscraper (+http://www.yourdomain.com)"
@@ -32,7 +54,8 @@ SCRAPEOPS_NUM_RESULTS = 50
 ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-#CONCURRENT_REQUESTS = 32
+# Max Concurrency On ScrapeOps Proxy Free Plan is 1 thread
+CONCURRENT_REQUESTS = 1
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
@@ -63,7 +86,12 @@ ROBOTSTXT_OBEY = False
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-   "bookscraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 400,
+   # "bookscraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 400,
+
+   # "rotating_proxies.middlewares.RotatingProxyMiddleware": 610,       # Option 1 & 2
+   # "rotating_proxies.middlewares.BanDetectionMiddleware": 620,        # Option 1 & 2
+   # "bookscraper.middlewares.MyProxyMiddleware": 650,                  # Option 3
+   "scrapeops_scrapy_proxy_sdk.scrapeops_scrapy_proxy_sdk.ScrapeOpsScrapyProxySdk": 250 # Option 4
 }
 
 # Enable or disable extensions
